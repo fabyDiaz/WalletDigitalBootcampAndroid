@@ -5,14 +5,14 @@ import java.util.List;
 
 public class ListaUsuarios {
 
-        private List<Usuario> listausuarios = new ArrayList();
+        private List<Cliente> listausuarios = new ArrayList();
         public ListaUsuarios() {
-            this.listausuarios.add(new Usuario("Homero","Simpson","12345789-6",789654123, 1234));
+            this.listausuarios.add(new Cliente(789456132,"123648965-6","Homero","Simpson","homero@correo.cl","+56963268745",new Cuenta()));
 
             //Agregar el resto de los usuarios
 
         }
-        public List<Usuario> getListaUsuarios() {
+        public List<Cliente> getListaUsuarios() {
             return this.listausuarios;
         }
 
