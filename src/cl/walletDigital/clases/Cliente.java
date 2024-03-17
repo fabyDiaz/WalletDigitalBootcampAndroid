@@ -8,21 +8,30 @@ public class Cliente {
     private String apellidoCliente;
     private String rutCliente;
     private String correoElectronico;
-
     private String telefonoCliente;
+    private String contrasena;
     private Cuenta cuentaCliente;
 
     public Cliente() {
     }
 
-    public Cliente(int idCliente, String nombreCliente, String apellidoCliente, String rutCliente, String correoElectronico, String telefonoCliente, Cuenta cuentaCliente) {
+    public Cliente(int idCliente, String nombreCliente, String apellidoCliente, String rutCliente, String correoElectronico, String telefonoCliente, String contrasena, Cuenta cuentaCliente) {
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.rutCliente = rutCliente;
         this.correoElectronico = correoElectronico;
         this.telefonoCliente = telefonoCliente;
+        this.contrasena = contrasena;
         this.cuentaCliente = cuentaCliente;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public String getContrasena() {
+        return contrasena;
     }
 
     @Override
@@ -46,7 +55,7 @@ public class Cliente {
         this.idCliente = (int)Math.random()*1000000;
     }
 
-    public Cliente crearCliente(){
+    public Cliente crearCliente() {
         Scanner scanner = new Scanner(System.in);
         int nuevoId;
 
@@ -59,13 +68,15 @@ public class Cliente {
         System.out.println("RUT: ");
         this.rutCliente = scanner.nextLine();
         System.out.println("EMAIL:");
-        this.correoElectronico=scanner.nextLine();
+        this.correoElectronico = scanner.nextLine();
         System.out.println("TELÉFONO");
-        this.telefonoCliente= scanner.nextLine();
+        this.telefonoCliente = scanner.nextLine();
+        System.out.println("CREA UNA CONTRASEÑA");
+        this.contrasena = scanner.nextLine();
 
-        Cuenta nuevaCuenta =  Cuenta.crearCuenta(nombreCompleto().toUpperCase());
+        Cuenta nuevaCuenta = Cuenta.crearCuenta(nombreCompleto().toUpperCase());
 
-        return new Cliente(idCliente,rutCliente,nombreCliente, apellidoCliente,correoElectronico,telefonoCliente,nuevaCuenta);
+        return new Cliente(idCliente, rutCliente, nombreCliente, apellidoCliente, correoElectronico, telefonoCliente, contrasena, nuevaCuenta);
 
     }
 
