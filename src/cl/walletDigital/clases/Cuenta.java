@@ -61,12 +61,12 @@ public class Cuenta {
     }
 
     public static Cuenta crearCuenta(String nombreCompleto){
-        Scanner scanner = new Scanner(System.in);
+        //Scanner scanner = new Scanner(System.in);
         int numeroCuenta = (int)Math.random()*100000;
-        double saldoCuenta;
+       // double saldoCuenta;
 
-        System.out.println("Ingrese el saldo de la cuenta: ");
-        saldoCuenta= scanner.nextDouble();
+       /* System.out.println("Ingrese el saldo de la cuenta: ");
+        saldoCuenta= scanner.nextDouble();*/
 
         return new Cuenta(numeroCuenta,nombreCompleto);
     }
@@ -90,5 +90,13 @@ public class Cuenta {
 
     }
 
+    @Override
+    public String toString() {
+        return "Cuenta{" +
+                "numeroCuenta=" + numeroCuenta +
+                ", titular='" + titular + '\'' +
+                ", saldo=" + saldo +
+                '}';
+    }
 }
 

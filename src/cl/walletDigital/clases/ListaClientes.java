@@ -7,12 +7,12 @@ public class ListaClientes {
 
         private List<Cliente> listaClientes = new ArrayList();
         public ListaClientes() {
-            this.listaClientes.add(new Cliente(789456132,"123648965-6","Homero","Simpson","homero@correo.cl","+56963268745", "Homero123",new Cuenta()));
+            this.listaClientes.add(new Cliente(789456132,"Homero","Simpson","123648965-6","homero@correo.cl","+56963268745", "Homero123",new Cuenta()));
 
-            //Agregar el resto de los usuarios
+            //Agregar más clientes
 
         }
-        public List<Cliente> getListaUsuarios() {
+        public List<Cliente> getListaClientes() {
             return this.listaClientes;
         }
 
