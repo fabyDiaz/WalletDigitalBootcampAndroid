@@ -3,28 +3,28 @@ package cl.walletDigital.clases;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class Cuenta {
 
-    private int numeroDeCuenta;
+    private int numeroCuenta;
     private String titular;
     private double saldo;
 
     public Cuenta() {
     }
-
-    public Cuenta(int numeroDeCuenta, String titular, double saldo) {
-        this.numeroDeCuenta = numeroDeCuenta;
+    public Cuenta(int numeroCuenta, String titular) {
+        this.numeroCuenta = numeroCuenta;
         this.titular = titular;
-        this.saldo = saldo;
+        this.saldo = 0;
     }
 
     public int getNumeroDeCuenta() {
-        return numeroDeCuenta;
+        return numeroCuenta;
     }
 
     public void setNumeroDeCuenta(int numeroDeCuenta) {
-        this.numeroDeCuenta = numeroDeCuenta;
+        this.numeroCuenta = numeroDeCuenta;
     }
 
     public String getTitular() {
@@ -46,13 +46,28 @@ public class Cuenta {
 
 
     public void MostrarDatosCuenta(){
-        System.out.println("Cuenta: "+ numeroDeCuenta);
+        System.out.println("Cuenta: "+ numeroCuenta);
         System.out.println("Títular: "+ titular);
         System.out.println("Saldo: "+ FormaterSaldo(saldo));
     }
 
     public void ingresoDinero(double dinero){
         this.saldo += dinero;
+    }
+
+    public void retiroDinero(double dinero){
+        this.saldo-=dinero;
+    }
+
+    public static Cuenta crearCuenta(String nombreCompleto){
+        //Scanner scanner = new Scanner(System.in);
+        int numeroCuenta = (int)Math.random()*100000;
+       // double saldoCuenta;
+
+       /* System.out.println("Ingrese el saldo de la cuenta: ");
+        saldoCuenta= scanner.nextDouble();*/
+
+        return new Cuenta(numeroCuenta,nombreCompleto);
     }
 
     public String FormaterSaldo(double monto) {
@@ -70,8 +85,18 @@ public class Cuenta {
         //RestarSaldo;
         //ver Saldo
         //conversor Moneda
+        //Balance
         //Menu
 
+    }
+
+    @Override
+    public String toString() {
+        return "Cuenta{" +
+                "numeroCuenta=" + numeroCuenta +
+                ", titular='" + titular + '\'' +
+                ", saldo=" + saldo +
+                '}';
     }
 }
 
