@@ -16,6 +16,21 @@ public class ListaClientes {
             return this.listaClientes;
         }
 
+        public void  addCliente(Cliente cliente){
+            listaClientes.add(cliente);
+        }
+
+        public Cliente validarRutCliente(String correo, String contrasena){
+            for(Cliente cliente : listaClientes){
+                if (correo.equals(cliente.getCorreoElectronico()) && cliente.validarContrasena(contrasena)) {
+                    return cliente;
+                }
+            }
+            return null;
+        }
+
+
+
     @Override
     public String toString() {
         return "ListaUsuarios{" +

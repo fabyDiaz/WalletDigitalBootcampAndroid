@@ -8,6 +8,9 @@ public class Aplicacion {
     ListaClientes listaClientes = new ListaClientes();
 
 
+    /**
+     * Mensaje de Bienvenida
+     */
     public void bienvenida() {
         System.out.println("*************************************");
         System.out.println("*     Bienvenido a Alke Wallet      *");
@@ -15,6 +18,12 @@ public class Aplicacion {
         System.out.println("*************************************");
     }
 
+
+    /**
+     * Método que muestra el menú de inicio de la App AlkWallet
+     * En este menú se despliega la opciones de crear una cuenta o ingrear con una cuenta existente.
+     * Si decide ingresar ocn una cuenta exitente, tendrá un máximo de 3 intentos, de lo contrario se termina la ejecución.
+     */
     public void menuInicioApp() {
         int opcion;
         byte salir;
@@ -31,7 +40,8 @@ public class Aplicacion {
                 scanner.nextLine();
                 switch (opcion) {
                     case 1:
-                        listaClientes.getListaClientes().add(cliente.crearCliente());
+                       // listaClientes.getListaClientes().add(cliente.crearCliente());
+                        listaClientes.addCliente(cliente.crearCliente());
                         break;
                     case 2:
                         menuCuentaUsuario();
@@ -47,6 +57,10 @@ public class Aplicacion {
         } while (salir == 1);
     }
 
+    /**
+     *
+     * @return
+     */
     public Cliente ingresoCuenta() {
         String correo, contrasena;
         Cliente cliente = null;
@@ -104,7 +118,7 @@ public class Aplicacion {
     }
 
     private static Cliente validarCredenciales(String correo, String contrasena, Cliente cliente) {
-        if (correo.equals(cliente.getCorreoElectronico()) && cliente.validarContraseña(contrasena)) {
+        if (correo.equals(cliente.getCorreoElectronico()) && cliente.validarContrasena(contrasena)) {
             return cliente;
         }
         return null;

@@ -84,7 +84,7 @@ public class Cliente {
         return correoElectronico;
     }
 
-    public boolean validarContraseña(String contrasena) {
+    public boolean validarContrasena(String contrasena) {
         return this.contrasena.equals(contrasena);
     }
 
@@ -132,8 +132,13 @@ public class Cliente {
             System.out.println("RUT (en formato xxxxxxxx-x: ");
             this.rutCliente = scanner.nextLine();
         }while(validarRut(rutCliente)==false);
-        System.out.println("EMAIL:");
-        this.correoElectronico = scanner.nextLine();
+        do{
+            System.out.println("EMAIL:");
+            this.correoElectronico = scanner.nextLine();
+            if (valiarEmail(correoElectronico)==false){
+                System.out.println("Correo no es válido");
+            }
+        }while(valiarEmail(correoElectronico)==false);
         System.out.println("TELÉFONO");
         this.telefonoCliente = scanner.nextLine();
         System.out.println("CREA UNA CONTRASEÑA");
@@ -159,7 +164,7 @@ public class Cliente {
     /**
      *  Valida rut de la forma XXXXXXXX-X
      */
-    public Boolean validarRut ( String rut ) {
+    public boolean validarRut ( String rut ) {
         Pattern pattern = Pattern.compile("^[0-9]+-[0-9kK]{1}$");
         Matcher matcher = pattern.matcher(rut);
         if ( matcher.matches() == false ) return false;
@@ -175,6 +180,17 @@ public class Cliente {
         for (;T!=0;T=(int) Math.floor(T/=10))
             S=(S+T%10*(9-M++%6))%11;
         return ( S > 0 ) ? String.valueOf(S-1) : "k";
+    }
+
+    public boolean valiarEmail(String email) {
+        // Patrón para validar el email
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+        Matcher mather = pattern.matcher(email);
+
+        return mather.find();
     }
 
 

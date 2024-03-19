@@ -13,7 +13,6 @@ public class Cuenta {
 
     public Cuenta() {
     }
-
     public Cuenta(int numeroCuenta, String titular) {
         this.numeroCuenta = numeroCuenta;
         this.titular = titular;
