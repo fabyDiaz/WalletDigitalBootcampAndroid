@@ -58,8 +58,10 @@ public class Aplicacion {
     }
 
     /**
+     *  Verifica que el correo y la contraseña ingresada ya se encuntra registrado.
+     *  Si lo encuntra devuelve al Cliente
+     * @return retorna el cliente luego de verificar que el correo y la contraseña ingresada sea correcta
      *
-     * @return
      */
     public Cliente ingresoCuenta() {
         String correo, contrasena;
@@ -89,11 +91,13 @@ public class Aplicacion {
         return cliente;
     }
 
+    /**
+     * Este es el menú que se muestra una vez que el cliente haya ingresado a su cuenta
+     */
     public void menuCuentaUsuario() {
         int opcion;
         byte salir;
         Cliente cliente = ingresoCuenta();
-        boolean valido = false;
         do {
             try {
                 System.out.println("    1. Ver mis datos");
@@ -117,6 +121,14 @@ public class Aplicacion {
         } while (salir == 2);
     }
 
+    /**
+     *Valida si el correo y contraseña ingresado coincide con el cliente de la lista.
+     * En caso que coincidan, devuelve el cliente.
+     * @param correo
+     * @param contrasena
+     * @param cliente
+     * @return
+     */
     private static Cliente validarCredenciales(String correo, String contrasena, Cliente cliente) {
         if (correo.equals(cliente.getCorreoElectronico()) && cliente.validarContrasena(contrasena)) {
             return cliente;

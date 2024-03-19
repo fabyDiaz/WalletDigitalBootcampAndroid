@@ -85,6 +85,7 @@ public class Cuenta {
         //RestarSaldo;
         //ver Saldo
         //conversor Moneda
+        //Balance
         //Menu
 
     }
