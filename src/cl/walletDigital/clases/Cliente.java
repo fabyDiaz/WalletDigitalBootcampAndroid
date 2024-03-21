@@ -9,24 +9,23 @@ public class Cliente {
     private String nombreCliente;
     private String apellidoCliente;
     private String rutCliente;
-    private String correoElectronico;
     private String telefonoCliente;
-    private String contrasena;
     private Cuenta cuentaCliente;
+    private Login login;
 
     public Cliente() {
     }
 
-    public Cliente(int idCliente, String nombreCliente, String apellidoCliente, String rutCliente, String correoElectronico, String telefonoCliente, String contrasena, Cuenta cuentaCliente) {
+    public Cliente(int idCliente, String nombreCliente, String apellidoCliente, String rutCliente, String telefonoCliente, Cuenta cuentaCliente, Login login) {
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.rutCliente = rutCliente;
-        this.correoElectronico = correoElectronico;
         this.telefonoCliente = telefonoCliente;
-        this.contrasena = contrasena;
         this.cuentaCliente = cuentaCliente;
+        this.login = login;
     }
+
 
     public int getIdCliente() {
         return idCliente;
@@ -60,32 +59,12 @@ public class Cliente {
         this.rutCliente = rutCliente;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
-    }
-
     public String getTelefonoCliente() {
         return telefonoCliente;
     }
 
     public void setTelefonoCliente(String telefonoCliente) {
         this.telefonoCliente = telefonoCliente;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public boolean validarContrasena(String contrasena) {
-        return this.contrasena.equals(contrasena);
     }
 
     public Cuenta getCuentaCliente() {
@@ -96,18 +75,12 @@ public class Cliente {
         this.cuentaCliente = cuentaCliente;
     }
 
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "idCliente=" + idCliente +
-                ", nombreCliente='" + nombreCliente + '\'' +
-                ", apellidoCliente='" + apellidoCliente + '\'' +
-                ", rutCliente='" + rutCliente + '\'' +
-                ", correoElectronico='" + correoElectronico + '\'' +
-                ", telefonoCliente='" + telefonoCliente + '\'' +
-                ", contrasena='" + contrasena + '\'' +
-                ", cuentaCliente=" + cuentaCliente +
-                '}';
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
     }
 
     public String nombreCompleto(){
@@ -118,9 +91,15 @@ public class Cliente {
         this.idCliente = (int)Math.random()*1000000;
     }
 
+    Scanner scanner = new Scanner(System.in);
+
+    /**
+     * Método que solicita los datos necesarios para crear un nuevo cliente
+     * @return nuevo cliente
+     */
     public Cliente crearCliente() {
-        Scanner scanner = new Scanner(System.in);
-        int nuevoId;
+        String email, contrasena;
+        Login login1= new Login();
 
         System.out.println("Ingrese los siguientes datos");
         System.out.println("-------------------------------");
@@ -132,21 +111,14 @@ public class Cliente {
             System.out.println("RUT (en formato xxxxxxxx-x: ");
             this.rutCliente = scanner.nextLine();
         }while(validarRut(rutCliente)==false);
-        do{
-            System.out.println("EMAIL:");
-            this.correoElectronico = scanner.nextLine();
-            if (valiarEmail(correoElectronico)==false){
-                System.out.println("Correo no es válido");
-            }
-        }while(valiarEmail(correoElectronico)==false);
         System.out.println("TELÉFONO");
         this.telefonoCliente = scanner.nextLine();
-        System.out.println("CREA UNA CONTRASEÑA");
-        this.contrasena = scanner.nextLine();
 
-        Cuenta nuevaCuenta = Cuenta.crearCuenta(nombreCompleto().toUpperCase());
+        this.login = login1.CrearCorreoyContrasena();
 
-        return new Cliente(idCliente, nombreCliente, apellidoCliente, rutCliente, correoElectronico, telefonoCliente, contrasena, nuevaCuenta);
+        this.cuentaCliente = Cuenta.crearCuenta(nombreCompleto().toUpperCase());
+
+        return new Cliente(idCliente, nombreCliente, apellidoCliente, rutCliente, telefonoCliente, cuentaCliente, login);
 
     }
 
@@ -157,7 +129,7 @@ public class Cliente {
         System.out.println("ID: ");
         System.out.println("NOMBRE: "+nombreCompleto());
         System.out.println(("RUT: "+ this.rutCliente));
-        System.out.println("CORREO: "+this.correoElectronico);
+        System.out.println("CORREO: "+this.login.getEmailCliente());
         System.out.println("TELÉFONO "+this.telefonoCliente);
     }
 
@@ -172,6 +144,20 @@ public class Cliente {
         return stringRut[1].toLowerCase().equals(dv(stringRut[0]));
     }
 
+    public void validarNombre(String nombre){
+        boolean salir = false;
+        do {
+            System.out.println("NOMBRE:");
+            nombre = scanner.nextLine();
+            if (nombre.matches("[a-zA-Z]{2,30}")){
+                salir = true;
+            }else {
+                System.out.println("Formato incorrecto");
+            }
+        }while (!salir);
+        salir = false;
+    }
+
     /**
      * Valida el dígito verificador
      */
@@ -182,15 +168,17 @@ public class Cliente {
         return ( S > 0 ) ? String.valueOf(S-1) : "k";
     }
 
-    public boolean valiarEmail(String email) {
-        // Patrón para validar el email
-        Pattern pattern = Pattern
-                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-
-        Matcher mather = pattern.matcher(email);
-
-        return mather.find();
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "idCliente=" + idCliente +
+                ", nombreCliente='" + nombreCliente + '\'' +
+                ", apellidoCliente='" + apellidoCliente + '\'' +
+                ", rutCliente='" + rutCliente + '\'' +
+                ", telefonoCliente='" + telefonoCliente + '\'' +
+                ", cuentaCliente=" + cuentaCliente +
+                ", login=" + login +
+                '}';
     }
 
 

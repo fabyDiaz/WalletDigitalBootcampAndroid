@@ -6,6 +6,7 @@ public class Aplicacion {
 
     Scanner scanner = new Scanner(System.in);
     ListaClientes listaClientes = new ListaClientes();
+    Cliente cliente = new Cliente();
 
 
     /**
@@ -26,15 +27,13 @@ public class Aplicacion {
      */
     public void menuInicioApp() {
         int opcion;
-        byte salir;
-        Cliente cliente = new Cliente();
-        ListaClientes listaClientes = new ListaClientes();
-
+        boolean salir=false;
         do {
             try {
-                System.out.println("    1. Crear cuenta");
-                System.out.println("    2. Ingresar");
+                System.out.println("    1. Registrar");
+                System.out.println("    2. Iniciar Sesión");
                 System.out.println("    3. Mostrar lista clientes");
+                System.out.println("    4. Salir");
                 System.out.println("    Selecciona una opción");
                 opcion = scanner.nextInt();
                 scanner.nextLine();
@@ -48,13 +47,14 @@ public class Aplicacion {
                         break;
                     case 3:
                         System.out.println(listaClientes.getListaClientes());
+                    case 4:
+                        System.out.println("Hasta la proxima!");
+                        salir = true;
                 }
-            } catch (Exception e) {
-                System.out.println("Error " + e.getMessage());
+            }catch (NumberFormatException e){
+                System.out.println("Solo números");
             }
-            System.out.println("SALIR:  1.NO     2.SI");
-            salir = scanner.nextByte();
-        } while (salir == 1);
+        } while (!salir);
     }
 
     /**
@@ -63,9 +63,8 @@ public class Aplicacion {
      * @return retorna el cliente luego de verificar que el correo y la contraseña ingresada sea correcta
      *
      */
-    public Cliente ingresoCuenta() {
+    public boolean inicioSesion() {
         String correo, contrasena;
-        Cliente cliente = null;
         int intentos = 0;
         boolean loginExitoso = false;
 
@@ -76,7 +75,7 @@ public class Aplicacion {
             contrasena = scanner.nextLine();
 
             // Validar usuario y contraseña
-            for (int i = 0; i < listaClientes.getListaClientes().size(); i++) {
+           for (int i = 0; i < listaClientes.getListaClientes().size(); i++) {
                 cliente = validarCredenciales(correo, contrasena, listaClientes.getListaClientes().get(i));
             }
             if (cliente != null) {
@@ -87,8 +86,9 @@ public class Aplicacion {
                 intentos++;
                 System.out.println("Correo electrónico o contraseña incorrectos. Intento " + intentos + " de 3.");
             }
+
         }
-        return cliente;
+        return loginExitoso;
     }
 
     /**
@@ -96,30 +96,34 @@ public class Aplicacion {
      */
     public void menuCuentaUsuario() {
         int opcion;
-        byte salir;
-        Cliente cliente = ingresoCuenta();
-        do {
-            try {
-                System.out.println("    1. Ver mis datos");
-                System.out.println("    2. Ver datos de mi cuenta");
-                System.out.println("    Selecciona una opción");
-                opcion = scanner.nextInt();
-                scanner.nextLine();
-                switch (opcion) {
-                    case 1:
-                        cliente.mostrarDatosCliente();
-                        break;
-                    case 2:
-                        cliente.getCuentaCliente().MostrarDatosCuenta();
-                        break;
+        boolean salir = false;
+        if(inicioSesion()==true){
+            do {
+                try {
+                    System.out.println("    1. Ver mis datos");
+                    System.out.println("    2. Ver datos de mi cuenta");
+                    System.out.println("    3. Salir");
+                    System.out.println("    Selecciona una opción");
+                    opcion = scanner.nextInt();
+                    scanner.nextLine();
+                    switch (opcion) {
+                        case 1:
+                            cliente.mostrarDatosCliente();
+                            break;
+                        case 2:
+                            cliente.getCuentaCliente().MostrarDatosCuenta();
+                            break;
+                        case 3:
+                            salir=true;
+                            System.out.println("Hasta pronto!");
+                    }
+                }catch (NumberFormatException e){
+                    System.out.println("Solo números");
                 }
-            } catch (Exception e) {
-                System.out.println("Error " + e.getMessage());
-            }
-            System.out.println("SALIR:  1.NO     2.SI");
-            salir = scanner.nextByte();
-        } while (salir == 2);
+            } while (!salir);
+        }
     }
+
 
     /**
      *Valida si el correo y contraseña ingresado coincide con el cliente de la lista.
@@ -130,7 +134,7 @@ public class Aplicacion {
      * @return
      */
     private static Cliente validarCredenciales(String correo, String contrasena, Cliente cliente) {
-        if (correo.equals(cliente.getCorreoElectronico()) && cliente.validarContrasena(contrasena)) {
+        if (correo.equals(cliente.getLogin().getEmailCliente()) && cliente.getLogin().validarContrasena(contrasena)) {
             return cliente;
         }
         return null;
