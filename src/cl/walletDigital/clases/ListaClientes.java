@@ -7,7 +7,7 @@ public class ListaClientes {
 
         private List<Cliente> listaClientes = new ArrayList();
         public ListaClientes() {
-            this.listaClientes.add(new Cliente(1,"Homero","Simpson","123648965-6","+56963268745", new Cuenta(),new Login("homero@correo.cl","homero123")));
+            this.listaClientes.add(new Cliente(1,"Homero","Simpson","123648965-6","+56963268745", new CuentaBancaria(),new Login("homero@correo.cl","homero123")));
 
             //Agregar más clientes
 

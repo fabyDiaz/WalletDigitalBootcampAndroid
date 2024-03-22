@@ -10,13 +10,13 @@ public class Cliente {
     private String apellidoCliente;
     private String rutCliente;
     private String telefonoCliente;
-    private Cuenta cuentaCliente;
+    private CuentaBancaria cuentaCliente;
     private Login login;
 
     public Cliente() {
     }
 
-    public Cliente(int idCliente, String nombreCliente, String apellidoCliente, String rutCliente, String telefonoCliente, Cuenta cuentaCliente, Login login) {
+    public Cliente(int idCliente, String nombreCliente, String apellidoCliente, String rutCliente, String telefonoCliente, CuentaBancaria cuentaCliente, Login login) {
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
@@ -67,11 +67,11 @@ public class Cliente {
         this.telefonoCliente = telefonoCliente;
     }
 
-    public Cuenta getCuentaCliente() {
+    public CuentaBancaria getCuentaCliente() {
         return cuentaCliente;
     }
 
-    public void setCuentaCliente(Cuenta cuentaCliente) {
+    public void setCuentaCliente(CuentaBancaria cuentaCliente) {
         this.cuentaCliente = cuentaCliente;
     }
 
@@ -100,23 +100,23 @@ public class Cliente {
     public Cliente crearCliente() {
         String email, contrasena;
         Login login1= new Login();
+        CuentaBancaria cuenta = new CuentaBancaria();
 
         System.out.println("Ingrese los siguientes datos");
         System.out.println("-------------------------------");
-        System.out.println("NOMBRE: ");
-        this.nombreCliente = scanner.nextLine();
-        System.out.println("APELLIDO: ");
-        this.apellidoCliente = scanner.nextLine();
+        validarNombre();
+        validarApellido();
         do{
             System.out.println("RUT (en formato xxxxxxxx-x: ");
             this.rutCliente = scanner.nextLine();
         }while(validarRut(rutCliente)==false);
+
         System.out.println("TELÉFONO");
         this.telefonoCliente = scanner.nextLine();
 
         this.login = login1.CrearCorreoyContrasena();
 
-        this.cuentaCliente = Cuenta.crearCuenta(nombreCompleto().toUpperCase());
+        this.cuentaCliente = cuenta.crearCuenta(nombreCompleto().toUpperCase());
 
         return new Cliente(idCliente, nombreCliente, apellidoCliente, rutCliente, telefonoCliente, cuentaCliente, login);
 
@@ -133,10 +133,38 @@ public class Cliente {
         System.out.println("TELÉFONO "+this.telefonoCliente);
     }
 
+    public void validarNombre(){
+        boolean valido = false;
+        do {
+            System.out.println("NOMBRE:");
+            this.nombreCliente = scanner.nextLine();
+            if (this.nombreCliente.matches("[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]{2,30}")){
+                valido = true;
+            }else {
+                System.out.println("Formato incorrecto");
+            }
+        }while (!valido);
+    }
+
+    public void validarApellido(){
+        boolean valido = false;
+        do {
+            System.out.println("APELLIDO:");
+            this.apellidoCliente= scanner.nextLine();
+            if (this.apellidoCliente.matches("[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]{2,30}")){
+                valido = true;
+            }else {
+                System.out.println("Formato incorrecto");
+            }
+        }while (!valido);
+    }
+
+
     /**
      *  Valida rut de la forma XXXXXXXX-X
      */
     public boolean validarRut ( String rut ) {
+
         Pattern pattern = Pattern.compile("^[0-9]+-[0-9kK]{1}$");
         Matcher matcher = pattern.matcher(rut);
         if ( matcher.matches() == false ) return false;
@@ -144,19 +172,17 @@ public class Cliente {
         return stringRut[1].toLowerCase().equals(dv(stringRut[0]));
     }
 
-    public void validarNombre(String nombre){
-        boolean salir = false;
-        do {
-            System.out.println("NOMBRE:");
-            nombre = scanner.nextLine();
-            if (nombre.matches("[a-zA-Z]{2,30}")){
-                salir = true;
-            }else {
-                System.out.println("Formato incorrecto");
-            }
-        }while (!salir);
-        salir = false;
-    }
+    /*public void validarRut () {
+        String[] stringRut;
+        do{
+            System.out.println("RUT (en formato xxxxxxxx-x: ");
+            this.rutCliente = scanner.nextLine();
+            Pattern pattern = Pattern.compile("^[0-9]+-[0-9kK]{1}$");
+            Matcher matcher = pattern.matcher(rutCliente);
+            stringRut = rutCliente.split("-");
+        }while(stringRut[1].toLowerCase().equals(dv(stringRut[0]))==false);
+
+    }*/
 
     /**
      * Valida el dígito verificador

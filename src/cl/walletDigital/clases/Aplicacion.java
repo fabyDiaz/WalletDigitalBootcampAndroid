@@ -1,5 +1,6 @@
 package cl.walletDigital.clases;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Aplicacion {
@@ -26,8 +27,8 @@ public class Aplicacion {
      * Si decide ingresar ocn una cuenta exitente, tendrá un máximo de 3 intentos, de lo contrario se termina la ejecución.
      */
     public void menuInicioApp() {
-        int opcion;
-        boolean salir=false;
+        int opcion=0;
+        boolean entradaValida=false;
         do {
             try {
                 System.out.println("    1. Registrar");
@@ -41,20 +42,28 @@ public class Aplicacion {
                     case 1:
                        // listaClientes.getListaClientes().add(cliente.crearCliente());
                         listaClientes.addCliente(cliente.crearCliente());
+                        scanner.nextLine();
                         break;
                     case 2:
                         menuCuentaUsuario();
+                        scanner.nextLine();
                         break;
                     case 3:
                         System.out.println(listaClientes.getListaClientes());
+                        scanner.nextLine();
                     case 4:
                         System.out.println("Hasta la proxima!");
-                        salir = true;
+                        scanner.nextLine();
+                    default:
+                        System.out.println("Opción no válida. Por favor, ingrese un número válido.");
+                        entradaValida = false;
+                        break;
                 }
-            }catch (NumberFormatException e){
-                System.out.println("Solo números");
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Ingrese un número entero válido.");
+                scanner.nextLine(); // Limpiar el buffer de entrada
             }
-        } while (!salir);
+        } while (!entradaValida|| opcion != 4);
     }
 
     /**
@@ -95,15 +104,24 @@ public class Aplicacion {
      * Este es el menú que se muestra una vez que el cliente haya ingresado a su cuenta
      */
     public void menuCuentaUsuario() {
-        int opcion;
-        boolean salir = false;
+        int opcion=0;
+        boolean entradaValida = false;
+        double dinero;
         if(inicioSesion()==true){
             do {
+                System.out.println("");
+                System.out.println("---------------------------------");
+                System.out.println("SALDO: "+cliente.getCuentaCliente().formatearModena(cliente.getCuentaCliente().getSaldo()));
+                System.out.println("---------------------------------");
                 try {
-                    System.out.println("    1. Ver mis datos");
-                    System.out.println("    2. Ver datos de mi cuenta");
-                    System.out.println("    3. Salir");
-                    System.out.println("    Selecciona una opción");
+                    System.out.println("Selecciona una opción:\n"+
+                                        "1.-    Ver mis datos\n"+
+                                        "2.-    Ver datos de mi cuenta\n"+
+                                        "3.-    Ingresar dinero\n"+
+                                        "4.-    Transferir dinero\n"+
+                                        "5.-    Retirar dinero\n"+
+                                        "6.-    Ver movimientos\n"+
+                                        "7.-    Salir");
                     opcion = scanner.nextInt();
                     scanner.nextLine();
                     switch (opcion) {
@@ -114,13 +132,32 @@ public class Aplicacion {
                             cliente.getCuentaCliente().MostrarDatosCuenta();
                             break;
                         case 3:
-                            salir=true;
+                            System.out.println("Ingrese Monto: ");
+                            dinero=scanner.nextDouble();
+                            cliente.getCuentaCliente().ingresoDinero(dinero);
+                            break;
+                        case 4:
+                            System.out.println("aquí podrás trnaferir dinero");
+                            break;
+                        case 5:
+                            System.out.println("¿Cuánto vas a retirar?");
+                            dinero=scanner.nextDouble();
+                            cliente.getCuentaCliente().retiroDinero(dinero);
+                            break;
+                        case 6:
+                            System.out.println("Aquí podrás ver tus movimientos");
+                            break;
+                        case 7:
                             System.out.println("Hasta pronto!");
+                        default:
+                            System.out.println("Opción no válida. Por favor, ingrese un número válido.");
+                            entradaValida = false;
+                            break;
                     }
                 }catch (NumberFormatException e){
                     System.out.println("Solo números");
                 }
-            } while (!salir);
+            } while (!entradaValida || opcion != 7);
         }
     }
 

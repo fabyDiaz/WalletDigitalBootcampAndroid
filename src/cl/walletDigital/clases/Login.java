@@ -33,39 +33,42 @@ public class Login {
         this.contrasena = contrasena;
     }
 
+
+    Scanner scanner = new Scanner(System.in);
+
     public boolean validarContrasena(String contrasena) {
         return this.contrasena.equals(contrasena);
     }
 
-    public String valiarEmail(String email) {
+    public void valiarEmail() {
         // Patrón para validar el email
-        Matcher mather;
+        Matcher matcher;
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
         do{
-            Pattern pattern = Pattern
-                    .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-
-            mather= pattern.matcher(email);
-
-            if(mather.find()==true){
-                return email;
-            }else{
-                System.out.println("Correo no es válido");
+            System.out.println("EMAIL:");
+            this.emailCliente=scanner.nextLine();
+            matcher= pattern.matcher(emailCliente);
+            if (!matcher.matches()) {
+                System.out.println("El correo electrónico no es válido.");
+               // System.out.println("El correo electrónico es válido.");
             }
 
-        }while (mather.find()==false);
+        }while (!matcher.matches());
 
-        return null;
     }
 
     public Login CrearCorreoyContrasena(){
         Scanner scanner = new Scanner(System.in);
         String email, c;
-        System.out.println("EMAIL:");
-        email=scanner.nextLine();
+        //System.out.println("EMAIL:");
+        //email=scanner.nextLine();
+        valiarEmail();
         System.out.println("CREA UNA CONTRASEÑA");
         c=scanner.nextLine();
-       return new Login(valiarEmail(email),c);
+       return new Login(this.emailCliente,c);
     }
 
     public Login prueba(){
